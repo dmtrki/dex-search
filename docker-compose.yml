@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  api:
+    build: .
+    container_name: token-search-api
+    env_file: .env
+    environment:
+      # переопределяем, чтобы ходить в контейнер redis
+      REDIS_URL: redis://redis:6379
+      PORT: ${PORT:-3000}
+      CACHE_TTL_SECONDS: ${CACHE_TTL_SECONDS:-60}
+    ports:
+      - "3000:3000"
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: token-search-redis
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+volumes:
+  redis-data:
