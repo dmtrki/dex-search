@@ -14,7 +14,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
       .setTitle('Token Search Service')
-      .setDescription('API for searching trading tokens via GeckoTerminal')
+      .setDescription('API for searching trading tokens')
       .setVersion('1.0')
       .build();
 
