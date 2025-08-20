@@ -59,7 +59,6 @@ export class SearchService {
         return pools;
     }
 
-    /** 3) По названию токена (через поиск пулов; далее нормализация) */
     async searchByName(network: string | undefined, q: string) {
         if (!q) throw new BadRequestException('q required');
         const key = `gt:name:${network || 'any'}:${q.toLowerCase()}`;
@@ -76,7 +75,6 @@ export class SearchService {
         return pools;
     }
 
-    /** Приводим к вашему формату ответа */
     private mapPools(resp: GtResponse) {
         const data = Array.isArray(resp.data) ? resp.data : [resp.data];
         const included = resp.included || [];
